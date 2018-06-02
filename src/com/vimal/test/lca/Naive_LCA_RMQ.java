@@ -16,19 +16,23 @@ import java.util.Arrays;
  * 
  */
 public class Naive_LCA_RMQ {
+	
+	public Naive_LCA_RMQ(Tree _t) {
+		t = _t;
+	}
 
-	public Tree t;
+	private Tree t;
 
-	public int[] values;
-	public int[] levels;
+	private int[] values;
+	private int[] levels;
 	// matrix[i][j] contains the index of the min element in a range sized j from
 	// index i in levels array
-	public int[][] matrix;
+	private int[][] matrix;
 
 	/**
 	 * The euler traversal is performed and values/levels stored.
 	 */
-	public void euler() {
+	private void euler() {
 		// number of items in euler traversal of a tree with n nodes is 2*n-1;
 		int m = 2 * t.getNumNodes() - 1;
 		values = new int[m];
@@ -84,7 +88,25 @@ public class Naive_LCA_RMQ {
 		return index + 1;
 	}
 	
-	public void test(int i1, int i2, int expectedLca) {
+	public void preProcess() {
+		int m = 2*t.getNumNodes()-1;
+
+		euler();
+		System.out.print("indexs : ");
+		for (int i = 0; i < m; i++) {
+			System.out.print(" " +i+",");
+		}
+		System.out.println();
+		System.out.println("values : " + Arrays.toString(values));
+		System.out.println("levels : " + Arrays.toString(levels));
+		naiveRMQ();
+		System.out.println("------------------------------");
+		for (int i = 0; i < m; i++) {
+			System.out.println(Arrays.toString(matrix[i]));
+		}
+	}
+	
+	public void query(int i1, int i2, int expectedLca) {
 		if(i1 <= i2) {			
 			System.out.println("LCA of " + values[i1] + " and " + values[i2] + " is " + values[matrix[i1][i2-i1]] + ". Expected : " + expectedLca);
 		}
@@ -95,27 +117,15 @@ public class Naive_LCA_RMQ {
 				.andLeft(Tree.B.withValue(2).andLeft(Tree.B.withValue(4)).andRight(Tree.B.withValue(5)))
 				.andRight(Tree.B.withValue(3).andLeft(Tree.B.withValue(6)).andRight(Tree.B.withValue(7))).build();
 		tree.print();
-		int m = 2*tree.getNumNodes()-1;
+		
+		Naive_LCA_RMQ lca = new Naive_LCA_RMQ(tree);
+		
+		lca.preProcess();
 
-		Naive_LCA_RMQ lca = new Naive_LCA_RMQ();
-		lca.t = tree;
-		lca.euler();
-		System.out.print("indexs : ");
-		for (int i = 0; i < m; i++) {
-			System.out.print(" " +i+",");
-		}
-		System.out.println();
-		System.out.println("values : " + Arrays.toString(lca.values));
-		System.out.println("levels : " + Arrays.toString(lca.levels));
-		lca.naiveRMQ();
-		System.out.println("------------------------------");
-		for (int i = 0; i < m; i++) {
-			System.out.println(Arrays.toString(lca.matrix[i]));
-		}
-		lca.test(8, 10, 3);
-		lca.test(2, 10, 1);
-		lca.test(1, 7, 1);
-		lca.test(1, 1, 2);
-		lca.test(0, 0, 1);
+		lca.query(8, 10, 3);
+		lca.query(2, 10, 1);
+		lca.query(1, 7, 1);
+		lca.query(1, 1, 2);
+		lca.query(0, 0, 1);
 	}
 }
