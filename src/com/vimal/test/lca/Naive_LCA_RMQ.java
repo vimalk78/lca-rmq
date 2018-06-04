@@ -69,7 +69,6 @@ public class Naive_LCA_RMQ {
 				}
 			}
 		}
-
 	}
 
 	private int recur(Tree t, int index, int level) {
@@ -96,14 +95,22 @@ public class Naive_LCA_RMQ {
 		for (int i = 0; i < m; i++) {
 			System.out.print(" " +i+",");
 		}
-		System.out.println();
+		System.out.println();		
 		System.out.println("values : " + Arrays.toString(values));
 		System.out.println("levels : " + Arrays.toString(levels));
 		naiveRMQ();
-		System.out.println("------------------------------");
+		System.out.println("------ query distance --> ");
+		System.out.println("|");
+		System.out.println("|  starting index");
+		System.out.println("V");
 		for (int i = 0; i < m; i++) {
-			System.out.println(Arrays.toString(matrix[i]));
+			for (int j = 0; j < m; j++) {
+				System.out.print(String.format("%4d,", matrix[i][j]));
+			}
+			System.out.println();
+			// System.out.println(Arrays.toString(matrix[i]));
 		}
+		System.out.println("------------------------------");
 	}
 	
 	public void query(int i1, int i2, int expectedLca) {
